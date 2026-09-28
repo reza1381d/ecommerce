@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "ecommerce-backend"
+version = "0.1.0"
+description = "E-commerce backend API"
+requires-python = ">=3.13"
+
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "sqlalchemy",
+    "pydantic-settings",
+    "pydantic[email]",
+    "alembic",
+    "pyjwt",
+    "bcrypt",
+    "psycopg[binary]",
+    "pytest",
+    "httpx2",
+]
+
+
+[tool.setuptools.packages.find]
+include = ["app*"]
