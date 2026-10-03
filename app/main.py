@@ -72,3 +72,8 @@ app.include_router(coupons_router)
 @app.get("/")
 def root():
     return {"message": "E-Commerce API is running"}
+
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
