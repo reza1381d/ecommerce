@@ -59,6 +59,7 @@ jobs:
       - name: Run tests
         env:
           DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/ecommerce
+          TEST_DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/ecommerce
           JWT_SECRET_KEY: ci-test-secret
           JWT_ALGORITHM: HS256
           JWT_ACCESS_TOKEN_EXPIRE_MINUTES: 30
