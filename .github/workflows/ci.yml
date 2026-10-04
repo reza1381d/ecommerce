@@ -95,6 +95,8 @@ jobs:
 
     needs: docker-build
 
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
     runs-on: ubuntu-latest
 
     steps:
@@ -120,5 +122,4 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/ecommerce-api:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/ecommerce-api:${{ github.sha }}

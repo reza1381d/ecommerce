@@ -5,7 +5,7 @@ services:
 
 
   api:
-    image: ecommerce-api:1.0.0
+    image: rezad81/ecommerce-api:${IMAGE_TAG:?IMAGE_TAG must be set}
     restart: unless-stopped
     ports:
       - "8000:8000"
