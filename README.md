@@ -92,6 +92,7 @@ ecommerce-backend/
 ├── docker-compose.dev.yml
 ├── docker-compose.prod.yml
 ├── entrypoint.sh
+├── .env.example
 ├── pyproject.toml
 ├── uv.lock
 └── alembic.ini
@@ -123,7 +124,24 @@ Install dependencies:
 uv sync
 ```
 
-Create a local `.env` with the required application configuration. Never commit real secrets.
+Create a local `.env` file based on `.env.example`:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Then replace the placeholder values in `.env` with your local configuration.
+
+Required environment variables:
+
+```env
+DATABASE_URL=postgresql+psycopg://USERNAME:PASSWORD@localhost:5432/ecommerce
+JWT_SECRET_KEY=CHANGE_ME_TO_A_RANDOM_SECRET
+JWT_ALGORITHM=HS256
+JWT_ACCESS_TOKEN_EXPIRE_MINUTES=30
+```
+
+Never commit `.env` or any real secrets.
 
 Run the API:
 
@@ -255,6 +273,7 @@ The e-commerce backend and its infrastructure are in a working state, including:
 - Docker containerization
 - Docker Compose development/production configuration
 - GitHub Actions CI
+- Environment configuration via `.env` and `.env.example`
 
 ## Repository
 
