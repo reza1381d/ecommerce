@@ -123,3 +123,25 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/ecommerce-api:${{ github.sha }}
+
+
+  deploy:
+
+    needs: docker-push
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ubuntu
+          key: ${{ secrets.vps_ssh_private_key }}
+          script: |
+            cd /opt/ecommerce
+            git pull origin main
+            IMAGE_TAG=${{ github.sha }} sh deploy.sh

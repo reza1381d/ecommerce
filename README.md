@@ -326,7 +326,42 @@ The following components have been verified:
 
 The current deployment is image-based and can be performed manually using the production Docker Compose configuration and `deploy.sh`.
 
-Automatic VPS deployment from GitHub Actions is not enabled yet.
+### Automatic VPS Deployment
+
+Production deployment is automated through GitHub Actions.
+
+On every push to `main`, the following pipeline runs:
+
+    Git Push
+        ↓
+    Tests
+        ↓
+    Docker Build
+        ↓
+    Docker Image Push
+        ↓
+    SSH to VPS
+        ↓
+    Git Pull
+        ↓
+    Production Deployment
+        ↓
+    Health Check
+
+The deployment job connects to the VPS through SSH and executes:
+
+    IMAGE_TAG=<git-sha> sh deploy.sh
+
+The Docker image is identified by the exact Git commit SHA that triggered the workflow.
+
+This ensures that the VPS deploys the same image that was built and pushed by the CI pipeline.
+
+GitHub Actions uses repository secrets for the VPS connection:
+
+    VPS_HOST
+    vps_ssh_private_key
+
+No production secrets are stored in the repository.
 
 ## Production Network Security
 
@@ -413,7 +448,9 @@ The e-commerce backend and its infrastructure are in a working state, including:
 
 Current production deployment is image-based and can be performed manually using the production Docker Compose configuration and `deploy.sh`.
 
-The next infrastructure step is to automate VPS deployment from GitHub Actions, followed by reverse proxy and HTTPS configuration.
+Automatic VPS deployment through GitHub Actions is now configured.
+
+The next infrastructure step is reverse proxy and HTTPS configuration.
 
 ## Repository
 
