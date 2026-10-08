@@ -189,6 +189,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.vps_ssh_private_key }}
           script: |
+            set -e
             cd /opt/ecommerce
             git pull origin main
             IMAGE_TAG=${{ github.sha }} sh deploy.sh
