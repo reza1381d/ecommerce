@@ -115,12 +115,19 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
 
-      - name: Build Docker image
+      - name: Build API Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
           push: false
           tags: ecommerce-api:ci
+
+      - name: Build frontend Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: false
+          tags: ecommerce-frontend:ci
 
 
   docker-push:
@@ -148,13 +155,21 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
 
-      - name: Build and push Docker image
+      - name: Build and push API Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/ecommerce-api:${{ github.sha }}
+
+      - name: Build and push frontend Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/ecommerce-frontend:${{ github.sha }}
 
 
   deploy:

@@ -9,3 +9,10 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000"
+
+
+  frontend:
+    image: rezad81/ecommerce-frontend:${IMAGE_TAG:?IMAGE_TAG must be set}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:80"

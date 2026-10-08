@@ -9,12 +9,12 @@ echo "================================"
 echo "Image tag: $IMAGE_TAG"
 
 echo
-echo "Pulling API image..."
+echo "Pulling production images..."
 
 docker compose \
   -f docker-compose.yml \
   -f docker-compose.prod.yml \
-  pull api
+  pull api frontend
 
 echo
 echo "Starting production services..."
