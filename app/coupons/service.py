@@ -1,10 +1,11 @@
 from datetime import datetime, timezone
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 
 from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from app.cart.models import Cart, CartItem
 from app.coupons.models import Coupon, CouponUsage
 from app.coupons.schemas import (
     CouponCreateRequest,
@@ -13,6 +14,7 @@ from app.coupons.schemas import (
 from app.core.exceptions import (
     CouponAlreadyExistsError,
     CouponAlreadyUsedError,
+    CartEmptyError,
     CouponExpiredError,
     CouponInactiveError,
     CouponNotEligibleError,
@@ -20,6 +22,7 @@ from app.core.exceptions import (
     CouponNotStartedError,
     CouponUsageLimitError,
 )
+from app.products.models import Product
 
 
 def create_coupon(
@@ -201,10 +204,62 @@ def calculate_discount(
     else:
         discount = coupon.discount_value
 
+    discount = discount.quantize(Decimal("1"), rounding=ROUND_HALF_UP)
     return min(
         discount,
         order_amount,
     )
+
+
+def preview_coupon_for_cart(
+    db: Session,
+    code: str,
+    user_id: int,
+):
+    normalized_code = code.strip().upper()
+    coupon = db.scalar(
+        select(Coupon).where(
+            func.upper(Coupon.code) == normalized_code,
+        )
+    )
+
+    if coupon is None:
+        raise CouponNotFoundError()
+
+    cart = db.scalar(
+        select(Cart).where(Cart.user_id == user_id)
+    )
+    if cart is None:
+        raise CartEmptyError()
+
+    cart_items = list(
+        db.scalars(
+            select(CartItem).where(CartItem.cart_id == cart.id)
+        ).all()
+    )
+    if not cart_items:
+        raise CartEmptyError()
+
+    product_ids = [item.product_id for item in cart_items]
+    products = list(
+        db.scalars(select(Product).where(Product.id.in_(product_ids))).all()
+    )
+    products_by_id = {product.id: product for product in products}
+    subtotal = Decimal("0")
+    for item in cart_items:
+        product = products_by_id.get(item.product_id)
+        if product is None:
+            raise CouponNotEligibleError()
+        subtotal += product.price * item.quantity
+
+    validate_coupon(db, coupon, user_id, subtotal)
+    discount = calculate_discount(coupon, subtotal)
+    return {
+        "valid": True,
+        "subtotal": subtotal,
+        "discount_amount": discount,
+        "total_amount": subtotal - discount,
+    }
 
 
 def consume_coupon(

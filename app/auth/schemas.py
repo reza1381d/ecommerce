@@ -24,6 +24,7 @@ class UserResponse(BaseModel):
     first_name: str
     last_name: str
     phone: str | None = None
+    role: str
 
 
 class TokenResponse(BaseModel):

@@ -110,7 +110,7 @@ def test_register_role_cannot_be_set_by_client(client):
 
     data = response.json()
 
-    assert "role" not in data
+    assert data["role"] == "customer"
 
 
 def test_register_invalid_email(client):

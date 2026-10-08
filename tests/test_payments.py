@@ -293,7 +293,7 @@ def test_successful_payment_creates_payment(client, db):
     data = response.json()
 
     assert data["order_id"] == order["id"]
-    assert data["amount"] == "200.00"
+    assert data["amount"] == "200"
     assert data["status"] == "successful"
     assert data["provider"] == "mock"
     assert data["provider_payment_id"].startswith("mock_")

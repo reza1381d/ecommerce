@@ -168,7 +168,7 @@ def test_create_product(client, db):
 
     assert data["name"] == "Laptop"
     assert data["description"] == "A laptop"
-    assert data["price"] == "1000.00"
+    assert data["price"] == "1000"
     assert data["stock"] == 10
     assert data["reserved_stock"] == 0
     assert data["category_id"] is None
@@ -229,7 +229,7 @@ def test_get_product(client, db):
 
     assert data["id"] == product_id
     assert data["name"] == "Laptop"
-    assert data["price"] == "1000.00"
+    assert data["price"] == "1000"
     assert data["stock"] == 10
 
 
@@ -479,7 +479,7 @@ def test_update_product(client, db):
     assert data["id"] == product_id
     assert data["name"] == "Gaming Laptop"
     assert data["description"] == "Updated description"
-    assert data["price"] == "1500.00"
+    assert data["price"] == "1500"
     assert data["stock"] == 20
 
 

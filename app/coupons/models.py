@@ -73,17 +73,17 @@ class Coupon(Base):
     )
 
     discount_value: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2),
+        Numeric(12, 0),
         nullable=False,
     )
 
     max_discount: Mapped[Decimal | None] = mapped_column(
-        Numeric(12, 2),
+        Numeric(12, 0),
         nullable=True,
     )
 
     min_order_amount: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2),
+        Numeric(12, 0),
         nullable=False,
         default=0,
     )

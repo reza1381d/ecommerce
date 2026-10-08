@@ -29,6 +29,8 @@ COPY --from=builder /app/entrypoint.sh /app/entrypoint.sh
 ENV PATH="/app/.venv/bin:$PATH"
 
 RUN useradd --create-home appuser \
+    && mkdir -p /app/uploads/products \
+    && chown -R appuser:appuser /app/uploads \
     && chmod +x /app/entrypoint.sh
 
 USER appuser

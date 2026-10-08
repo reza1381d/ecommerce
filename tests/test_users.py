@@ -265,7 +265,7 @@ def test_role_cannot_be_changed(client):
 
     data = response.json()
 
-    assert "role" not in data
+    assert data["role"] == "customer"
 
 
 def test_is_active_cannot_be_changed(client):

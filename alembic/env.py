@@ -12,6 +12,7 @@ from app.payments import models as payment_models
 from app.addresses.models import Address
 from app.coupons.models import Coupon, CouponUsage
 from app.reservations.models import Reservation
+from app.store_settings import models as store_settings_models
 from app.core.config import settings
 from app.core.database import Base
 

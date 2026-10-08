@@ -55,7 +55,7 @@ class Product(Base):
     )
 
     price: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2),
+        Numeric(12, 0),
         nullable=False,
     )
 
@@ -84,6 +84,8 @@ class Product(Base):
         nullable=False,
         default=True,
     )
+
+    image_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

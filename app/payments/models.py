@@ -39,7 +39,7 @@ class Payment(Base):
     )
 
     amount: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2),
+        Numeric(12, 0),
         nullable=False,
     )
 

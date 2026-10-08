@@ -14,7 +14,7 @@ class ProductCreateRequest(BaseModel):
     )
     price: Decimal = Field(
         ge=0,
-        decimal_places=2,
+        decimal_places=0,
         max_digits=12,
     )
     stock: int = Field(
@@ -40,7 +40,7 @@ class ProductUpdateRequest(BaseModel):
     price: Decimal | None = Field(
         default=None,
         ge=0,
-        decimal_places=2,
+        decimal_places=0,
         max_digits=12,
     )
     stock: int | None = Field(
@@ -67,6 +67,7 @@ class ProductResponse(BaseModel):
     reserved_stock: int
     category_id: int | None
     is_active: bool
+    image_url: str | None = None
 
     @computed_field
     @property

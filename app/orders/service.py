@@ -6,9 +6,12 @@ from sqlalchemy.orm import Session, selectinload
 
 from app.addresses.models import Address
 from app.cart.models import Cart, CartItem
+from app.coupons.models import Coupon
+from app.coupons.service import calculate_discount, consume_coupon, validate_coupon
 from app.core.exceptions import (
     AddressNotFoundError,
     CartEmptyError,
+    CouponNotFoundError,
     InsufficientStockError,
     OrderNotFoundError,
     ProductInactiveError,
@@ -45,6 +48,7 @@ def checkout(
     db: Session,
     user_id: int,
     address_id: int,
+    coupon_code: str | None = None,
 ) -> Order:
 
     try:
@@ -172,6 +176,25 @@ def checkout(
             subtotal += item_total
 
         order.subtotal = subtotal
+
+        coupon = None
+        if coupon_code and coupon_code.strip():
+            normalized_code = coupon_code.strip().upper()
+            coupon = db.scalar(
+                select(Coupon)
+                .where(func.upper(Coupon.code) == normalized_code)
+                .with_for_update()
+            )
+            if coupon is None:
+                raise CouponNotFoundError()
+            validate_coupon(db, coupon, user_id, subtotal)
+            order.discount_amount = calculate_discount(coupon, subtotal)
+            consume_coupon(
+                db=db,
+                coupon_id=coupon.id,
+                user_id=user_id,
+                order_id=order.id,
+            )
 
         order.total_amount = (
             subtotal

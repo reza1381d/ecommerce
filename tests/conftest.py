@@ -16,6 +16,7 @@ from app.payments.models import Payment
 from app.products.models import Product
 from app.users.models import User
 from app.reservations.models import Reservation
+from app.store_settings.models import StoreSetting
 
 
 class TestSettings(BaseSettings):
@@ -97,6 +98,7 @@ def clean_database():
         session.execute(delete(Coupon))
         session.execute(delete(Product))
         session.execute(delete(Category))
+        session.execute(delete(StoreSetting))
         session.execute(delete(User))
 
         session.commit()

@@ -65,30 +65,30 @@ class Order(Base):
     )
 
     subtotal: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2),
+        Numeric(12, 0),
         nullable=False,
     )
 
     discount_amount: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2),
+        Numeric(12, 0),
         nullable=False,
         default=0,
     )
 
     shipping_amount: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2),
+        Numeric(12, 0),
         nullable=False,
         default=0,
     )
 
     tax_amount: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2),
+        Numeric(12, 0),
         nullable=False,
         default=0,
     )
 
     total_amount: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2),
+        Numeric(12, 0),
         nullable=False,
     )
 
@@ -214,7 +214,7 @@ class OrderItem(Base):
     )
 
     unit_price: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2),
+        Numeric(12, 0),
         nullable=False,
     )
 
@@ -224,7 +224,7 @@ class OrderItem(Base):
     )
 
     total_price: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2),
+        Numeric(12, 0),
         nullable=False,
     )
 

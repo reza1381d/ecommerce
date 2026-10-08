@@ -252,11 +252,11 @@ def test_successful_checkout_creates_order(client, db):
     data = response.json()
 
     assert data["status"] == "pending_payment"
-    assert data["subtotal"] == "200.00"
-    assert data["discount_amount"] == "0.00"
-    assert data["shipping_amount"] == "0.00"
-    assert data["tax_amount"] == "0.00"
-    assert data["total_amount"] == "200.00"
+    assert data["subtotal"] == "200"
+    assert data["discount_amount"] == "0"
+    assert data["shipping_amount"] == "0"
+    assert data["tax_amount"] == "0"
+    assert data["total_amount"] == "200"
 
     assert data["address"]["recipient_name"] == "Order User"
     assert data["address"]["phone"] == "09120000000"
@@ -271,9 +271,9 @@ def test_successful_checkout_creates_order(client, db):
 
     assert item["product_id"] == product["id"]
     assert item["product_name"] == product["name"]
-    assert item["unit_price"] == "100.00"
+    assert item["unit_price"] == "100"
     assert item["quantity"] == 2
-    assert item["total_price"] == "200.00"
+    assert item["total_price"] == "200"
 
 
 def test_checkout_reserves_product_stock(client, db):
@@ -412,8 +412,8 @@ def test_checkout_multiple_products(client, db):
 
     data = response.json()
 
-    assert data["subtotal"] == "175.00"
-    assert data["total_amount"] == "175.00"
+    assert data["subtotal"] == "175"
+    assert data["total_amount"] == "175"
     assert len(data["items"]) == 2
 
 
@@ -609,8 +609,8 @@ def test_checkout_snapshots_product_name_and_price(client, db):
     item = checkout_response.json()["items"][0]
 
     assert item["product_name"] == "Updated Product"
-    assert item["unit_price"] == "150.00"
-    assert item["total_price"] == "300.00"
+    assert item["unit_price"] == "150"
+    assert item["total_price"] == "300"
 
 
 def test_checkout_rejects_another_users_address(client):
@@ -846,7 +846,7 @@ def test_user_can_get_own_order(client, db):
 
     assert response.status_code == 200
     assert response.json()["id"] == order_id
-    assert response.json()["total_amount"] == "75.00"
+    assert response.json()["total_amount"] == "75"
     assert response.json()["address"]["recipient_name"] == "Order User"
 
 

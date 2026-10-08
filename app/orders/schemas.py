@@ -1,10 +1,11 @@
 from decimal import Decimal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class CheckoutRequest(BaseModel):
     address_id: int
+    coupon_code: str | None = Field(default=None, max_length=100)
 
 
 class OrderItemResponse(BaseModel):

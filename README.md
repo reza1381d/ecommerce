@@ -21,6 +21,11 @@ The project follows a **Modular Monolith** architecture: one backend application
 - Transactional inventory updates
 - Reservation expiration and inventory release
 - Coupon management and discount calculation
+- Admin order, user, and payment lists with pagination and filters
+- Accounting reports with daily, monthly, yearly, and custom date ranges
+- Admin-managed store identity, home-page text, color palette, and currency unit
+- Product image upload and removal
+- Whole-number prices stored in toman and shown in toman or rial
 - PostgreSQL
 - Alembic migrations
 - pytest test suite
@@ -59,7 +64,7 @@ The project follows a **Modular Monolith** architecture: one backend application
                                 │
                            PostgreSQL
 
-`Inventory` is implemented as an internal service rather than a public API domain.
+`Inventory` is an internal service rather than a public API domain. Admin endpoints stay with their domain (`/admin/orders`, `/admin/users`, and `/admin/payments`). Sales reporting lives in the separate `accounting` module under `/admin/dashboard`.
 
 ## Project Structure
 
@@ -68,12 +73,24 @@ The project follows a **Modular Monolith** architecture: one backend application
     ├── app/
     │   ├── auth/
     │   ├── users/
+    │   │   ├── admin_router.py
+    │   │   ├── admin_schemas.py
+    │   │   └── admin_service.py
     │   ├── addresses/
     │   ├── categories/
     │   ├── products/
+    │   │   └── image_storage.py
     │   ├── cart/
     │   ├── orders/
+    │   │   ├── admin_router.py
+    │   │   ├── admin_schemas.py
+    │   │   └── admin_service.py
     │   ├── payments/
+    │   │   ├── admin_router.py
+    │   │   ├── admin_schemas.py
+    │   │   └── admin_service.py
+    │   ├── accounting/
+    │   ├── store_settings/
     │   ├── reservations/
     │   ├── coupons/
     │   ├── inventory/
@@ -84,7 +101,8 @@ The project follows a **Modular Monolith** architecture: one backend application
     │   ├── versions/
     │   └── env.py
     │
-    ├── tests/
+    ├── tests/                    # Backend API and domain tests
+    ├── frontend/                 # React, TypeScript, Vite, and Vitest
     ├── .github/workflows/ci.yml
     ├── Dockerfile
     ├── docker-compose.yml
@@ -110,6 +128,7 @@ The project follows a **Modular Monolith** architecture: one backend application
 | PyJWT | JWT authentication |
 | bcrypt | Password hashing |
 | pytest | Testing |
+| Vitest + Testing Library | Frontend unit and component testing |
 | uv | Dependency management |
 | Docker | Containerization |
 | Docker Compose | Multi-container environment |
@@ -176,7 +195,7 @@ To also remove the PostgreSQL volume:
 
 Alembic manages database migrations.
 
-The migration chain currently ends at the reservations revision.
+The migration history includes product images and store name, palette, currency, and home-page settings. Apply migrations before running the API against an existing database.
 
 The API container automatically runs:
 
@@ -186,13 +205,48 @@ before starting Uvicorn.
 
 ## Testing
 
-Run the full test suite:
+### Backend
+
+The backend suite uses a dedicated PostgreSQL database configured in `.env.test`. Keep this database separate from development or production data. Install the declared dependencies, then run:
 
     uv run pytest -q
 
-Current test suite:
+The tests cover the domain APIs and services, including checkout and inventory, coupons, admin listings, store settings, product images, and accounting reports.
 
-    297 tests
+### Frontend
+
+Run the React component and utility tests:
+
+    cd frontend
+    npm ci
+    npm test
+
+Build the frontend for production:
+
+    npm run build
+
+Frontend tests cover currency formatting and conversion, calendar conversion and preference persistence, and favorites persistence.
+
+## Administrative API overview
+
+| Area | Endpoint | Purpose |
+|---|---|---|
+| Store settings | `GET /store/settings` | Public store name, palette, currency, and home-page text |
+| Store settings | `PUT /admin/store/settings` | Admin-only settings update |
+| Orders | `GET /admin/orders` | Paginated orders with customer and latest payment status |
+| Users | `GET /admin/users` | Paginated users with search and sorting |
+| Payments | `GET /admin/payments` | Paginated payments with search, filters, and sorting |
+| Accounting | `GET /admin/dashboard/stats` | Sales and order summary for a recent period |
+| Accounting | `GET /admin/dashboard/product-sales` | Units and revenue per product |
+| Accounting | `GET /admin/dashboard/sales-timeline` | Daily, monthly, or yearly reports; accepts an optional custom date range |
+| Product images | `POST /products/{product_id}/image` | Admin-only JPG, PNG, or WebP upload up to 5 MB |
+| Product images | `DELETE /products/{product_id}/image` | Admin-only image removal |
+
+Custom sales reports require both ISO dates and return at most 366 buckets. Example:
+
+    GET /admin/dashboard/sales-timeline?group_by=day&start_date=2026-01-01&end_date=2026-01-31
+
+Uploaded images are served from `/uploads/products/`. Set `PRODUCT_IMAGE_DIR` to choose the storage directory and mount persistent storage at that path when running in containers.
 
 ## CI
 
@@ -208,9 +262,12 @@ Current pipeline:
             ↓
     Python 3.13 + uv
             ↓
-    Install dependencies
-            ↓
-    pytest
+      ┌─────┴────────┐
+      │              │
+   pytest      Node.js + npm
+                     ↓
+             Frontend tests + lint + build
+      └──────┬───────┘
             ↓
     Docker image build
             ↓

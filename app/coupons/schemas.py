@@ -16,21 +16,21 @@ class CouponCreateRequest(BaseModel):
     discount_value: Decimal = Field(
         gt=0,
         max_digits=12,
-        decimal_places=2,
+        decimal_places=0,
     )
 
     max_discount: Decimal | None = Field(
         default=None,
         ge=0,
         max_digits=12,
-        decimal_places=2,
+        decimal_places=0,
     )
 
     min_order_amount: Decimal = Field(
         default=Decimal("0"),
         ge=0,
         max_digits=12,
-        decimal_places=2,
+        decimal_places=0,
     )
 
     max_uses: int | None = Field(
@@ -93,21 +93,21 @@ class CouponUpdateRequest(BaseModel):
         default=None,
         gt=0,
         max_digits=12,
-        decimal_places=2,
+        decimal_places=0,
     )
 
     max_discount: Decimal | None = Field(
         default=None,
         ge=0,
         max_digits=12,
-        decimal_places=2,
+        decimal_places=0,
     )
 
     min_order_amount: Decimal | None = Field(
         default=None,
         ge=0,
         max_digits=12,
-        decimal_places=2,
+        decimal_places=0,
     )
 
     max_uses: int | None = Field(
@@ -145,5 +145,11 @@ class CouponResponse(BaseModel):
 
 
 class CouponValidationResponse(BaseModel):
-    valid: bool
+    valid: bool = True
+    subtotal: Decimal
     discount_amount: Decimal
+    total_amount: Decimal
+
+
+class CouponValidationRequest(BaseModel):
+    code: str = Field(min_length=1, max_length=100)

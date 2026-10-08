@@ -61,6 +61,7 @@ def create_order_from_cart(
         db=db,
         user_id=user_id,
         address_id=data.address_id,
+        coupon_code=data.coupon_code,
     )
 
     return build_order_response(

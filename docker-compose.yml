@@ -26,6 +26,12 @@ services:
     env_file:
       - .env
 
+    environment:
+      PRODUCT_IMAGE_DIR: /app/uploads/products
+
+    volumes:
+      - product_uploads:/app/uploads/products
+
     depends_on:
       postgres:
         condition: service_healthy
@@ -33,3 +39,4 @@ services:
 
 volumes:
   postgres_data:
+  product_uploads:

@@ -1,0 +1,150 @@
+:root {
+  --store-accent: #2563eb;
+  --store-accent-hover: #3b82f6;
+  --store-accent-soft: #93c5fd;
+  --store-accent-light: #bfdbfe;
+  --store-page: #020617;
+  --store-surface: #0f172a;
+  --store-surface-raised: #17233b;
+  --store-surface-deep: #080f20;
+  --store-border: #1e293b;
+  --store-border-strong: #334155;
+  --store-glow: rgba(37, 99, 235, 0.18);
+}
+
+:root[data-store-palette="emerald"] {
+  --store-accent: #059669;
+  --store-accent-hover: #10b981;
+  --store-accent-soft: #6ee7b7;
+  --store-accent-light: #a7f3d0;
+  --store-page: #03130f;
+  --store-surface: #0b211a;
+  --store-surface-raised: #123126;
+  --store-surface-deep: #061a14;
+  --store-border: #174334;
+  --store-border-strong: #28634c;
+  --store-glow: rgba(16, 185, 129, 0.2);
+}
+
+:root[data-store-palette="violet"] {
+  --store-accent: #7c3aed;
+  --store-accent-hover: #8b5cf6;
+  --store-accent-soft: #c4b5fd;
+  --store-accent-light: #ddd6fe;
+  --store-page: #0d0719;
+  --store-surface: #18102a;
+  --store-surface-raised: #24163b;
+  --store-surface-deep: #130b22;
+  --store-border: #382455;
+  --store-border-strong: #56377d;
+  --store-glow: rgba(139, 92, 246, 0.2);
+}
+
+:root[data-store-palette="amber"] {
+  --store-accent: #d97706;
+  --store-accent-hover: #f59e0b;
+  --store-accent-soft: #fcd34d;
+  --store-accent-light: #fde68a;
+  --store-page: #171006;
+  --store-surface: #24180b;
+  --store-surface-raised: #35220c;
+  --store-surface-deep: #1d1308;
+  --store-border: #4b3214;
+  --store-border-strong: #76501b;
+  --store-glow: rgba(245, 158, 11, 0.18);
+}
+
+:root[data-store-palette="rose"] {
+  --store-accent: #e11d48;
+  --store-accent-hover: #f43f5e;
+  --store-accent-soft: #fda4af;
+  --store-accent-light: #fecdd3;
+  --store-page: #190810;
+  --store-surface: #260e19;
+  --store-surface-raised: #381322;
+  --store-surface-deep: #200a15;
+  --store-border: #4f1b2d;
+  --store-border-strong: #78223d;
+  --store-glow: rgba(244, 63, 94, 0.18);
+}
+
+html,
+body {
+  background-color: var(--store-page) !important;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, var(--store-glow), transparent 38%),
+    var(--store-page) !important;
+  transition: background-color 180ms ease;
+}
+
+[class~="bg-slate-950"] { background-color: var(--store-page) !important; }
+[class~="bg-slate-950/95"] { background-color: color-mix(in srgb, var(--store-page) 95%, transparent) !important; }
+[class~="bg-slate-950/90"] { background-color: color-mix(in srgb, var(--store-page) 92%, transparent) !important; }
+[class~="bg-slate-950/50"] { background-color: color-mix(in srgb, var(--store-surface-deep) 75%, transparent) !important; }
+[class~="bg-slate-900"],
+[class~="bg-slate-900/80"] { background-color: var(--store-surface) !important; }
+[class~="bg-slate-950"]:is(input, textarea, select) { background-color: var(--store-surface-deep) !important; }
+[class~="bg-slate-800"] { background-color: var(--store-surface-raised) !important; }
+[class~="hover:bg-slate-800"]:hover { background-color: var(--store-surface-raised) !important; }
+[class~="border-slate-800"] { border-color: var(--store-border) !important; }
+[class~="border-slate-700"] { border-color: var(--store-border-strong) !important; }
+[class~="hover:border-slate-700"]:hover { border-color: var(--store-border-strong) !important; }
+
+.bg-blue-600,
+.bg-indigo-600 { background-color: var(--store-accent) !important; }
+.hover\:bg-blue-500:hover { background-color: var(--store-accent-hover) !important; }
+.text-blue-400,
+.hover\:text-blue-300:hover { color: var(--store-accent-soft) !important; }
+.text-blue-300 { color: var(--store-accent-light) !important; }
+.border-blue-500,
+.hover\:border-blue-500:hover,
+.focus\:border-blue-500:focus { border-color: var(--store-accent) !important; }
+[class~="bg-blue-600/15"] { background-color: color-mix(in srgb, var(--store-accent) 15%, transparent) !important; }
+
+:root[data-store-palette="teal"] {
+  --store-accent: #0d9488; --store-accent-hover: #14b8a6; --store-accent-soft: #5eead4; --store-accent-light: #99f6e4;
+  --store-page: #031715; --store-surface: #0b211e; --store-surface-raised: #12312c; --store-surface-deep: #061b18; --store-border: #17443e; --store-border-strong: #28635a; --store-glow: rgba(20, 184, 166, 0.2);
+}
+:root[data-store-palette="cyan"] {
+  --store-accent: #0891b2; --store-accent-hover: #06b6d4; --store-accent-soft: #67e8f9; --store-accent-light: #a5f3fc;
+  --store-page: #03151b; --store-surface: #0b2029; --store-surface-raised: #12303b; --store-surface-deep: #061a21; --store-border: #174150; --store-border-strong: #246174; --store-glow: rgba(6, 182, 212, 0.2);
+}
+:root[data-store-palette="indigo"] {
+  --store-accent: #4f46e5; --store-accent-hover: #6366f1; --store-accent-soft: #a5b4fc; --store-accent-light: #c7d2fe;
+  --store-page: #08091b; --store-surface: #11132c; --store-surface-raised: #1c2040; --store-surface-deep: #0b0d23; --store-border: #292d5a; --store-border-strong: #3d4380; --store-glow: rgba(99, 102, 241, 0.2);
+}
+:root[data-store-palette="fuchsia"] {
+  --store-accent: #c026d3; --store-accent-hover: #d946ef; --store-accent-soft: #f0abfc; --store-accent-light: #f5d0fe;
+  --store-page: #18091b; --store-surface: #250f2a; --store-surface-raised: #35143c; --store-surface-deep: #1c0b21; --store-border: #4a1c53; --store-border-strong: #70267c; --store-glow: rgba(217, 70, 239, 0.18);
+}
+:root[data-store-palette="lime"] {
+  --store-accent: #65a30d; --store-accent-hover: #84cc16; --store-accent-soft: #bef264; --store-accent-light: #d9f99d;
+  --store-page: #101605; --store-surface: #1b230d; --store-surface-raised: #293514; --store-surface-deep: #151d09; --store-border: #35491a; --store-border-strong: #506c23; --store-glow: rgba(132, 204, 22, 0.18);
+}
+:root[data-store-palette="orange"] {
+  --store-accent: #ea580c; --store-accent-hover: #f97316; --store-accent-soft: #fdba74; --store-accent-light: #fed7aa;
+  --store-page: #1a0d06; --store-surface: #28150b; --store-surface-raised: #3a1e0d; --store-surface-deep: #211108; --store-border: #522a14; --store-border-strong: #7c3b19; --store-glow: rgba(249, 115, 22, 0.2);
+}
+.store-admin-brand {
+  background-image: linear-gradient(
+    135deg,
+    var(--store-accent),
+    color-mix(in srgb, var(--store-accent) 62%, var(--store-surface-deep))
+  ) !important;
+}
+.store-hero {
+  border-color: color-mix(in srgb, var(--store-accent) 35%, var(--store-border)) !important;
+  background-image: linear-gradient(
+    125deg,
+    color-mix(in srgb, var(--store-accent) 28%, var(--store-surface)) 0%,
+    var(--store-surface) 52%,
+    var(--store-page) 100%
+  ) !important;
+  box-shadow: 0 24px 80px -48px var(--store-glow);
+}
+
+
+
